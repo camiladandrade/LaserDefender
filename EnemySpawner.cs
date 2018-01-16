@@ -20,17 +20,7 @@ public class EnemySpawner : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(movingRight){
-			transform.position += new Vector3(speed*Time.deltaTime, 0, 0);
-		}else{
-			transform.position += new Vector3(-speed*Time.deltaTime, 0, 0);
-		}
-		
-		float rightEdgeOfFormation = transform.position.x + (0.5f*width);
-		float leftEdgeOfFormation = transform.position.x - (0.5f*width);
-		if(leftEdgeOfFormation < xMin || rightEdgeOfFormation > xMax){
-			movingRight = !movingRight;
-		}
+		FormationMovement();
 	}
 	
 	void CreateEnemy(){
@@ -50,5 +40,21 @@ public class EnemySpawner : MonoBehaviour {
 	
 	public void OnDrawGizmos(){
 		Gizmos.DrawWireCube(transform.position, new Vector3(width, height, 0));
+	}
+	
+	void FormationMovement (){
+		if(movingRight){
+			transform.position += new Vector3(speed*Time.deltaTime, 0, 0);
+		}else{
+			transform.position += new Vector3(-speed*Time.deltaTime, 0, 0);
+		}
+		
+		float rightEdgeOfFormation = transform.position.x + (0.5f*width);
+		float leftEdgeOfFormation = transform.position.x - (0.5f*width);
+		if(leftEdgeOfFormation < xMin){
+			movingRight = true;
+		} else if(rightEdgeOfFormation > xMax){
+			movingRight = false;
+		}
 	}
 }
